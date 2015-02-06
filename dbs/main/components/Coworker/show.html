@@ -1,0 +1,14 @@
+
+<div class="valign-wrapper avatar">
+  {?doc.avatarPath}
+    <img class="valign" src="{baseURL}/{doc.avatarPath}" alt="Photo de {doc.username}"/>
+  {:else}
+    <i class="mdi-image-photo-camera valign grey-text text-lighten-1"></i>
+  {/doc.avatarPath}
+</div>
+
+<h1>{username}</h1>
+
+<p><a href="{baseURL}/edit">Modifier</a></p>
+
+<p>{email}</p>

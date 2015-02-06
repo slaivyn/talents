@@ -1,0 +1,27 @@
+{
+  "name": "coworkskills-main",
+  "version": "0.0.1",
+  "description": "Find cowokers by skills (main part)",
+  "load": "lib/app",
+  "modules": [
+    "lib"
+  ],
+  "attachments": [
+    "html",
+    "static"
+  ],
+  "dust": {
+    "templates": "html"
+  },
+  "dependencies": {
+    "properties": null,
+    "attachments": null,
+    "couchtypes": null,
+    "modules": null,
+    "dust": null,
+    "duality": null,
+    "duality-dust": null,
+    "duality-flashmessages": null,
+    "users": null
+  }
+}

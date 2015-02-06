@@ -1,0 +1,96 @@
+.relative {
+  position: relative;
+}
+
+.login-form {
+  float:        right;
+  margin-right: 10px;
+}
+
+.login-form input {
+  width: inherit;
+}
+
+.username {
+  padding: 0 32px
+}
+
+.avatar {
+  min-height: 10rem;
+}
+
+.avatar i.mdi-image-photo-camera {
+  font-size: 4rem;
+}
+
+.avatar > img {
+  max-width: 180px;
+}
+
+.ui-helper-hidden-accessible {
+  display:none;
+}
+
+.hidden {
+  display: none;
+}
+
+.editButton {
+  /*float: right;*/
+  display: none;
+}
+
+.coworker .input-field, .coworker .form {
+  display: none;
+}
+
+.skill {
+  padding:     0px 3px;
+  white-space: nowrap;
+}
+
+.container {
+  position: relative;
+}
+
+.skills {
+  min-height: 1rem;
+}
+
+.filter {
+  position: absolute;
+  top:      0;
+  right:    0;
+  padding:  8px;
+}
+
+.padding-16px {
+  padding: 16px;
+}
+
+.dropzone {
+  border:        2px dashed;
+  border-radius: 5px;
+  padding:       25px;
+  text-align:    center;
+  height:        220px;
+  width:         220px;
+}
+
+.coworker-list {
+  /*display:   flex;
+  flex-wrap: wrap;*/
+}
+
+.coworker-col {
+  width: 200px;
+  /*flex-grow: 1;*/
+  padding:   1px !important;
+}
+
+.opened {
+  position:  absolute;
+  width:     100%;
+  /*max-width: inherit;*/
+  z-index:   99;
+}

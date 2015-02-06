@@ -1,0 +1,152 @@
+<div class="input-field ui-front white filter">
+  <i class="mdi-action-search prefix"></i>
+  <input id="coworkerfilter" type="text" class="coworkerfilter"/>
+  <label for="coworkerfilter">Filtrer</label>
+</div>
+<div class="row">
+  <div class="col s12"><h2>Talents<span class="blue-text">@</span>Coworkingre</h2></div>
+</div>
+
+{?rows}
+  {#rows}
+  <div class="row coworker-list">
+  {#cols}
+    <div class="col coworker-col">
+      <div class="coworker white z-depth-1 padding-16px">
+        <form method="PUT" action="{baseURL}/{doc._id}">
+          <input type="hidden" value="{doc._id}"  name="_id"  id="id__id"  />
+          <input type="hidden" value="{doc.id}"   name="id"   id="id_id"   />
+          <input type="hidden" value="{doc._rev}" name="_rev" id="id__rev" />
+          <input type="hidden" value="{type}"     name="type" id="id_type" />
+          <span class="error"></span>
+          <div class="row">
+            <div class="col s12 m12 center valign-wrapper avatar">
+              {?doc.username}
+              <a href="#" class="openCoworker not-form">
+              {?doc.avatarFileName}
+                <img class="valign"
+                     src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
+                     alt="Photo de {doc.username}"/>
+              {:else}
+                <i class="mdi-image-photo-camera valign grey-text text-lighten-1"></i>
+              {/doc.avatarFileName}
+              </a>
+              {:else}
+               <a class="new-coworker btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+              {/doc.username}
+              <!-- image loader-->
+               <div class="input-field" id="id_avatar">
+                  <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
+                  <div class="dropzone grey-text valign-wrapper">
+                    <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
+                         alt="Avatar"/>
+                  </div>
+
+                </div>
+            </div>
+            <div class="col s12 m12 right-col">
+              <div class="right-align not-form">
+                <button type="button" class="btn editButton blue">Éditer</button>
+              </div>
+              <div class="right-align form">
+                <button type="submit" class="btn">Valider</button>
+              </div>
+
+              <a href="#" class="openCoworker center not-form blue-text"><h5>{doc.username}</h5></a>
+              <div class="input-field">
+                <input id="username" name="username" type="text" class="validate" value="{doc.username}"/>
+                <label for="username">Prénom Nom</label>
+              </div>
+              {^doc.username}
+              <div class="input-field">
+                <input id="password" name="password" type="password"/>
+                <label for="password">Mot de passe</label>
+              </div>
+              {/doc.username}
+              <div class="hidden">
+                {?doc.email}
+                  <p class="not-form">{doc.email}</p>
+                {/doc.email}
+                <div class="input-field">
+                  <input id="email" name="email" type="email" class="validate" value="{doc.email}"/>
+                  <label for="email">Adresse e-mail</label>
+                </div>
+
+                {?doc.website}
+                <p class="not-form"><a href="{doc.website}">{doc.website}</a></p>
+                {/doc.website}
+                <div class="input-field">
+                  <input id="website" name="website" type="text" class="validate" value="{doc.website}"/>
+                  <label for="website">Site web</label>
+                </div>
+
+                {?doc.twitter}
+                  <p class="not-form"><a href="{doc.twitterUrl}"}>{doc.twitter}</a></p>
+                {/doc.twitter}
+                <div class="input-field">
+                  <input id="twitter" name="twitter" type="text" class="validate" value="{doc.twitter}"/>
+                  <label for="twitter">@twitter</label>
+                </div>
+
+                {?doc.github}
+                  <p class="not-form"><a href="{doc.githubUrl}">{doc.github}</a></p>
+                {/doc.github}
+                <div class="input-field">
+                  <input id="github" name="github" type="text" class="validate" value="{doc.github}"/>
+                  <label for="github">@github</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 m12 center">
+              <div class="skills">
+                {#doc.skillList}
+                  <span class="skill not-form blue lighten-3">{.}</span>
+                {/doc.skillList}
+                <div class="input-field">
+                  <input id="skillList" name="skillList" type="text" class="validate" value="{doc.skillList}"/>
+                  <label for="skillList">Compétences (séparées par des virgules)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  {/cols}
+  </div>
+{/rows}
+{:else}
+  <p>No coworker yet</p>
+{/rows}
+
+<input type="hidden" name="dbname" value="{dbname}"/>
+<!--
+<form method="POST" action="">
+  <table>
+    {form|s}
+  </table>
+</form>
+
+{form}
+-->
+
+<!--
+<div class="render render-div">
+  <div class="field required">
+    <div class="form-label">
+      <label for="id_username">Username</label>
+    </div>
+    <div class="form-content">
+      <div class="inner">
+        <input type="text" value="" name="username" id="id_username" />
+      </div>
+      <div class="hint"></div>
+      <div class="errors"></div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="final"></div>
+</div>
+-->
