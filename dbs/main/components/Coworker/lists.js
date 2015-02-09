@@ -9,7 +9,14 @@ exports.coworkers = function (head, req) {
 
   var col, rows = [];
   var cols = [];
-  if(req.peer == "81.220.156.5" || req.peer == "127.0.0.1") {
+  var peer = '';
+  if (typeof sessionStorage != "undefined") {
+    peer = sessionStorage.getItem("peer")
+  }
+  if (req.peer) {
+    peer = req.peer
+  }
+  if (peer == "81.220.156.5" || peer == "127.0.0.1") {
     cols[0] = {type: typeName};
   }
 
@@ -35,20 +42,18 @@ exports.coworkers = function (head, req) {
     rows.push({cols: cols});
   }
 
-  if(typeof console != "undefined") {
-    console.log("rows", rows)
-  }
-
   var form = new forms.Form(types[typeName], null, {
     exclude: ['registrationTime']
   });
-  if(req.info) {
-    dbname = req.info.db_name
-  } else {
-    dbname = ""
+  if(typeof console != "undefined") {
+    console.log("peer", peer)
+  }
+  else {
+    log("peer")
+    log(peer)
   }
   var content = templates.render('Coworker/list.html', req, {
-//    dbname: dbname,
+    peer:   peer,
     rows:   rows,
     form:   form.toHTML(req),
   });

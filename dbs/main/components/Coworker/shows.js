@@ -6,3 +6,10 @@ exports.coworker = function (doc, req) {
     content: templates.render('Coworker/show.html', req, doc)
   }
 }
+
+exports.ip = function (head, req) {
+  return {
+    body: JSON.stringify(req.peer),
+    headers: {'Content-Type': 'application/json'}
+  }
+}

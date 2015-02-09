@@ -10,7 +10,9 @@
 {?rows}
   {#rows}
   <div class="row coworker-list">
+    <div class="coworker-modal"></div>
   {#cols}
+    <div class="col coworker-col hidden"></div>
     <div class="col coworker-col">
       <div class="coworker white z-depth-1 padding-16px">
         <form method="PUT" action="{baseURL}/{doc._id}">
@@ -39,7 +41,7 @@
                   <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
                   <div class="dropzone grey-text valign-wrapper">
                     <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
-                         alt="Avatar"/>
+                         alt="Avatar (glisser-déposer)"/>
                   </div>
 
                 </div>
@@ -121,7 +123,7 @@
   <p>No coworker yet</p>
 {/rows}
 
-<input type="hidden" name="dbname" value="{dbname}"/>
+
 <!--
 <form method="POST" action="">
   <table>
