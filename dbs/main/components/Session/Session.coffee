@@ -1,24 +1,24 @@
 kansoRequire  = require
 
 class Session
-  constructor: (@_appName) ->
+  constructor: (@_appName, @mainDb) ->
     @kansoSession = kansoRequire 'session'
     @kansoUsers   = kansoRequire 'users'
     _this         = this
 
-    #@kansoSession.userCtx.db = @mainDb
+    if @mainDb?
+      @kansoSession.userCtx.db = @mainDb
 
     @kansoSession.on 'change', (userCtx) =>
       console.log "session's changed", userCtx.db
-      #if @mainDb? and !@kansoSession.userCtx.db?
-      #  @kansoSession.userCtx.db = @mainDb
+      if @mainDb? and !@kansoSession.userCtx.db?
+        @kansoSession.userCtx.db = @mainDb
       @showOrHideLoginForm(userCtx)
 
     $("form[name='login']").on 'submit.' + @_appName, (ev) ->
       ev.preventDefault()
       ev.stopImmediatePropagation()
       username = $("input[name='login_username']", this).val()
-      #dbUsername = _this.mainDb + '.' + username
       dbUsername = _this.getUserId(username)
       pwd = $("input[name='login_password']").val()
       _this.kansoSession.login(
@@ -38,16 +38,18 @@ class Session
     @showOrHideLoginForm(@kansoSession.userCtx)
 
   getUsername: (dbUsername = @kansoSession.userCtx.name) ->
-    #if dbUsername? and dbUsername.indexOf(@mainDb + '.') == 0
-    #  username = dbUsername[@mainDb.length+1..]
-    #return username
-    return dbUsername
+    if not @mainDb?
+      return dbUsername
+    if dbUsername? and dbUsername.indexOf(@mainDb + '.') == 0
+      username = dbUsername[@mainDb.length+1..]
+    return username
 
   getUserId: (username) ->
-    #if not username?
-    #  return @kansoSession.userCtx.name
-    #return @mainDb + '.' + username
-    return username
+    if not @mainDb?
+      return username
+    if not username?
+      return @kansoSession.userCtx.name
+    return @mainDb + '.' + username
 
   isConnected: (username) ->
     if not username?
