@@ -36,7 +36,7 @@ paths = {
   mainDb:  'dbs/main'
   html:    ['dbs/main/*.html', 'dbs/main/components/**/*.html'].concat excludedFolders
   css:     ['dbs/main/*.css', 'dbs/main/components/**/*.css'].concat excludedFolders
-  out:     '_kanso'
+  out:     'build'
   js:      ['dbs/main/*.js', 'dbs/main/components/**/*.js'].concat(excludedFolders, excludedJSFiles)
   static:  'dbs/main/static/**'
   kanso:   ("dbs/main/components/**/#{modName}.js" for modName in kansoModules).concat(excludedFolders)
@@ -72,7 +72,6 @@ gulp.task 'loadCouchAppFiles', ['kanso-files'], ->
           content += "\n\nreExports(exports, '#{moduleName}');"
       if content.length > 0
         content = firstLines + content
-        console.log content
         fs.writeFileSync(
           nodePath.join(libPath, filename)
           content
