@@ -28,7 +28,6 @@ class ImageLoader
           return (e) ->
             # Render thumbnail.
             result = e.target.result
-            #console.log 'dataURL1', result, $('img', parent)
             img = new Image()
             img.src = e.target.result
             img.onload = ->

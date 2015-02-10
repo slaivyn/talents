@@ -6,6 +6,8 @@ class ClickManager
     _this = this
     #console.error 'set master click handler'
     $(document).on 'click.' + @_appName, (event) ->
+      if not _this.callback?
+        return true
       targetEl = event.target
       #console.log "click somewhere", _this.isOutside, targetEl, _this.ignoreNextIfNameIs
       if _this.ignoreNextIfNameIs? and _this.ignoreNextIfNameIs == targetEl.name
@@ -17,7 +19,7 @@ class ClickManager
           #console.log "focus", targetEl
           $(targetEl).focus()
         return true
-      if _this.callback? and _this.isOutside
+      if _this.isOutside
         #console.log 'outside', _this.insideElement, targetEl
         _this.callback()
       #console.log targetEl, targetEl.tagName, targetEl.htmlFor
@@ -37,5 +39,12 @@ class ClickManager
       #console.log 'inside', @isOutside
       @isOutside = false
       return true
+
+  reinit: () ->
+    if @insideElement
+      @insideElement.off 'click.' + @_appName
+    delete @callback
+    delete @insideElement
+
 
 module.exports = ClickManager

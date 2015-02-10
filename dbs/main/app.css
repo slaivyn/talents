@@ -1,3 +1,28 @@
+* {
+  margin: 0
+}
+
+html, body {
+  height: 100%
+}
+
+/* TODO: not responsive */
+main {
+  min-height:     100%;
+  margin-bottom:  -140px;
+}
+
+main:after {
+  content: "";
+  display: block;
+}
+
+footer, main:after {
+  height: 120px;
+}
+
+
+
 .relative {
   position: relative;
 }
@@ -83,14 +108,28 @@
 }
 
 .coworker-col {
-  width: 200px;
-  /*flex-grow: 1;*/
+  width:     200px;
   padding:   1px !important;
+}
+
+.coworker-modal {
+  transition: none;
+}
+
+.modal-background {
+  z-index:          999;
+  position:         fixed;
+  background-color: grey;
+  opacity: 0.5;
+  top:     0;
+  bottom:  0;
+  left:    0;
+  right:   0;
+  display: none;
 }
 
 .opened {
   position:  absolute;
   width:     100%;
-  /*max-width: inherit;*/
-  z-index:   99;
+  z-index:   1000;
 }
