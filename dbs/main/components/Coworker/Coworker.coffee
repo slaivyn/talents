@@ -9,14 +9,14 @@ getMaxHeightOfRow = (row) ->
   maxHeight = 0
   $('.coworker', row).each ->
     if $(this).outerHeight() > maxHeight
-      maxHeight = $(this).outerHeight()
+      maxHeight = $(this).outerHeight() + 1
   return maxHeight
 
 adjustColSize = (coworker, maxHeight) ->
   coworker = $(coworker)
   if not maxHeight?
     maxHeight = getMaxHeightOfRow(coworker.closest('.row'))
-  coworker.css('height', maxHeight)
+  coworker.css('min-height', maxHeight)
 
 
 adjustAllColSizes = () ->
@@ -226,7 +226,6 @@ class Coworker
 
     addNewSkillInputIfNeeded(coworkerElement)
     validateLength = (input) ->
-      console.log input.val().length, input[0].maxLength
       if input.val().length > input[0].maxLength
         input.removeClass('valid').addClass('invalid')
     $('input.skill', coworkerElement).on 'blur', ->
