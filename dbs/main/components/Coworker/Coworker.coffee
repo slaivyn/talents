@@ -104,16 +104,16 @@ class Coworker
       'top':  position.top
       'left': position.left
     })
-    if position.left < $(window).width()/2
-      modal.css('width', col.width() + col.outerWidth() * 2)
-    else
-      modal.css('left', position.left - col.outerWidth() * 2)
     coworkerModal = $('.coworker-modal .coworker')
     $('.m12', coworkerModal).addClass('m6').removeClass('m12')
     $('.hidden', coworkerModal).show()
     if @isAllowedToEdit(@getCoworkerUsername(coworkerModal))
       $('.editButton', coworkerModal).show()
+    modal.css('width', col.width() + col.outerWidth() * 2)
+    if position.left > $(window).width()/2
+      modal.css('left', position.left - col.outerWidth() * 2)
     modal.show()
+
     @clickManager.setInsideElement(coworkerModal)
     @clickManager.setCallback =>
       @close(coworkerElement)
