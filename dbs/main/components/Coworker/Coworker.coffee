@@ -46,6 +46,17 @@ class Coworker
       _this.open(coworkerElement)
       return false
 
+    #New-coworker button
+    displayNewCoworkerButton = () ->
+      if _this.session.isConnected()
+        $('.coworker-col').has('.new-coworker').hide()
+      else
+        $('.coworker-col').has('.new-coworker').show()
+
+    @session.on 'change', () ->
+      displayNewCoworkerButton()
+    displayNewCoworkerButton()
+
     $(document).on 'click.' + @_appName, 'a.new-coworker', (event) ->
       coworkerElement = $(this).closest('.coworker')
       coworkerModal = _this.open(coworkerElement)

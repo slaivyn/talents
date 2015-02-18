@@ -88,5 +88,15 @@ class Session
       $('button.logout',              form).hide()
       $('button.login, input', form).show()
 
+  on: (name, callback) ->
+    if name == 'login' or name == 'logout'
+      @kansoSession.on 'change', (userCtx) ->
+        if name == 'login' and userCtx.name
+          return callback(userCtx)
+        if name == 'logout' and not userCtx.name
+          return callback(userCtx)
+
+    @kansoSession.on name, callback
+
 
 module.exports = Session
