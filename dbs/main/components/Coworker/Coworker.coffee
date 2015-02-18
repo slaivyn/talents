@@ -217,6 +217,12 @@ class Coworker
     $('.not-form',           coworkerElement).hide()
     $('.input-field, .form', coworkerElement).show()
 
+    validateLength = (input) ->
+      if input.val().length > input[0].maxLength
+        input.removeClass('valid').addClass('invalid')
+      else
+        input.removeClass('invalid').addClass('valid')
+
     addNewSkillInputIfNeeded = (coworkerElement) ->
       lastOne = $('input.skill:last', coworkerElement)
       skills  = $('input.skill', coworkerElement)
@@ -229,6 +235,7 @@ class Coworker
           .attr('class', 'form skill')
         lastOne.parent().after(newSkill)
         $('.form', coworkerElement).show()
+        skills = $('input.skill', coworkerElement)
 
       skills.off '.skill'
       lastOne.on 'keyup.' + @_appName + '.skill', (event) ->
@@ -239,13 +246,14 @@ class Coworker
         if input.val() == ""
           input.remove()
           addNewSkillInputIfNeeded(coworkerElement)
+        else
+          validateLength(input)
+
+      skills.on 'keyup.' + @_appName + '.skill', ->
+        validateLength($(this))
 
     addNewSkillInputIfNeeded(coworkerElement)
-    validateLength = (input) ->
-      if input.val().length > input[0].maxLength
-        input.removeClass('valid').addClass('invalid')
-    $('input.skill', coworkerElement).on 'blur', ->
-      validateLength($(this))
+
     $('input.validate', coworkerElement).each ->
       input = $(this)
       if input.val().length > 0 && input.is(':valid')
