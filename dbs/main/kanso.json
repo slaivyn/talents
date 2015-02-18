@@ -1,6 +1,6 @@
 {
   "name": "talents-main",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Find people by skills - created for a coworking place (main part)",
   "load": "lib/app",
   "modules": [
