@@ -40,6 +40,7 @@ exports.coworker = new Type('coworker', {
     github:           fields.string      ({required: false}),
     email:            fields.string      ({required: false}),
     tel:              fields.string      ({required: false}),
+    presentation:     fields.string      ({required: false}),
     registrationTime: fields.createdTime (),
     avatar:           fields.attachments ({required: false}),
   }

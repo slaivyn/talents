@@ -21,27 +21,33 @@
           <input type="hidden" value="{type}"     name="type" id="id_type" />
           <span class="error"></span>
           <div class="row">
-            <div class="col s12 m12 center avatar valign-wrapper">
-              {?doc.username}
-              <a href="#" class="openCoworker not-form">
-              {?doc.avatarFileName}
-                <img class="valign"
-                     src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
-                     alt="Photo de {doc.username}"/>
-              {:else}
-                <i class="mdi-image-photo-camera valign grey-text text-lighten-1"></i>
-              {/doc.avatarFileName}
-              </a>
-              {:else}
-               <a class="new-coworker not-form btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
-              {/doc.username}
-              <!-- image loader-->
-              <div class="input-field" id="id_avatar">
-                <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
-                <div class="dropzone grey-text valign-wrapper">
-                  <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
-                       alt="Avatar (glisser-déposer)"/>
+            <div class="col s12 m12 center">
+              <div class="valign-wrapper avatar">
+                {?doc.username}
+                <a href="#" class="openCoworker not-form">
+                {?doc.avatarFileName}
+                  <img class="valign"
+                       src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
+                       alt="Photo de {doc.username}"/>
+                {:else}
+                  <i class="mdi-image-photo-camera valign grey-text text-lighten-1"></i>
+                {/doc.avatarFileName}
+                </a>
+                {:else}
+                 <a class="new-coworker not-form btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                {/doc.username}
+                <!-- image loader-->
+                <div class="input-field" id="id_avatar">
+                  <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
+                  <div class="dropzone grey-text valign-wrapper">
+                    <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
+                         alt="Avatar (glisser-déposer)"/>
+                  </div>
                 </div>
+              </div>
+              <div class="input-field">
+                <textarea name="presentation" class="materialize-textarea" maxlength="100">{doc.presentation}</textarea>
+                <label for="presentation">Courte présentation</label>
               </div>
             </div>
             <div class="col s12 m12 right-col">
@@ -103,20 +109,19 @@
               <div class="skills">
                 <span class="form">Compétences principales (5 max)</span><br/>
                 {#doc.skillList}
-                  <span class="skill not-form blue lighten-3">{.}</span>
+                  {?.}
+                    <span class="skill not-form blue lighten-3">{.}</span>
+                  {/.}
                   <div class="input-field">
                     <input class="form skill validate" name="skill{@idx}{.}{/idx}" type="text" value="{.}"
                          maxlength="25"/>
                   </div>
                 {/doc.skillList}
-                {#moreSkill}
-                <div class="input-field">
-                  <input class="form skill validate" name="skill{idx}" type="text"
-                       maxlength="25"/>
-                </div>
-                {/moreSkill}
                 <input type="hidden" name="skillList" value=""/>
               </div>
+            </div>
+            <div class="col s12 m12 hidden">
+              <p>{doc.presentation}</p>
             </div>
           </div>
         </form>

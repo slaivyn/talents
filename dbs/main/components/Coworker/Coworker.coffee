@@ -36,11 +36,6 @@ class Coworker
     adjustAllColSizes()
     $(window).resize(adjustAllColSizes)
 
-    $('label').each (i, label) ->
-      label = $(label)
-      if label.siblings('input').val() != ""
-        label.addClass('active')
-
     $(document).on  'click.' + @_appName, 'a.openCoworker', (event) ->
       coworkerElement = $(this).closest('.coworker')
       _this.open(coworkerElement)
@@ -123,6 +118,8 @@ class Coworker
     @clickManager.setCallback =>
       @close(coworkerElement)
 
+    doNotHandleNextSubmit = false
+
     beforeSubmit = (form) ->
       coworker = kansoRequire('lib/types').coworker
       tmpDoc = {
@@ -146,7 +143,6 @@ class Coworker
       form.attr('action', kansoRequire('duality/utils').getBaseURL() + '/' + _id)
       doNotHandleNextSubmit = true
 
-    doNotHandleNextSubmit = false
     _this = this
     $('form', coworkerModal).off 'submit.' + @_appName
     $('form', coworkerModal).on 'submit.' + @_appName, (ev) ->
@@ -217,7 +213,19 @@ class Coworker
     $('.not-form',           coworkerElement).hide()
     $('.input-field, .form', coworkerElement).show()
 
+    $('label', coworkerElement).each (i, label) ->
+      forVal = label.htmlFor
+      label = $(label)
+      element = label.siblings("*[name='#{forVal}']")
+      if element.val() != ""
+        label.addClass('active')
+      else
+        label.removeClass('active')
+
     validateLength = (input) ->
+      if input.val() == ""
+        input.removeClass('invalid')
+        return
       if input.val().length > input[0].maxLength
         input.removeClass('valid').addClass('invalid')
       else
@@ -230,9 +238,9 @@ class Coworker
       if lastOne.val() != "" and nb < 5
         newSkill = $('input.skill:first').parent('.input-field').clone()
         newSkill.children('input')
-          .attr('value', '')
           .attr('name', 'skill' + nb)
           .attr('class', 'form skill')
+          .val('')
         lastOne.parent().after(newSkill)
         $('.form', coworkerElement).show()
         skills = $('input.skill', coworkerElement)
@@ -256,8 +264,10 @@ class Coworker
 
     $('input.validate', coworkerElement).each ->
       input = $(this)
-      if input.val().length > 0 && input.is(':valid')
+      if input.val() != "" && input.is(':valid')
         input.addClass('valid')
+      else
+        input.removeClass('valid')
       if this.maxLength > 0
         validateLength(input)
 

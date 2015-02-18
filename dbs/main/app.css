@@ -21,6 +21,9 @@ footer, main:after {
   height: 120px;
 }
 
+.footer-copyright {
+  height: 100px !important;
+}
 
 
 .relative {
@@ -78,7 +81,7 @@ footer, main:after {
   position: relative;
 }
 
-.col {
+.col.m12 {
   padding: 0px !important;
 }
 

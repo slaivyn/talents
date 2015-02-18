@@ -16,7 +16,7 @@ exports.coworkers = function (head, req) {
     peer = req.peer
   }
   if (peer == "81.220.156.5" || peer == "127.0.0.1") {
-    cols[0] = {type: typeName};
+    cols[0] = {type: typeName, doc: {skillList: [""]}};
   }
 
   while (col = getRow()) {
@@ -38,9 +38,10 @@ exports.coworkers = function (head, req) {
       col.doc.skillList = []
     }
     if (col.doc.skillList.length < 5) {
-      col.moreSkill = {
-        idx: col.doc.skillList.length
-      }
+      //col.moreSkill = {
+      //  idx: col.doc.skillList.length
+      //}
+      col.doc.skillList.push("")
     }
     col.type = col.doc.type
     cols.push(col);
