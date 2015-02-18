@@ -7,8 +7,7 @@
   <div class="col s12"><h2>Talents<span class="blue-text">@</span>Coworkingre</h2></div>
 </div>
 
-{?rows}
-  {#rows}
+{?cols}
   <div class="row coworker-list">
     <div class="coworker-modal"></div>
   {#cols}
@@ -22,7 +21,7 @@
           <input type="hidden" value="{type}"     name="type" id="id_type" />
           <span class="error"></span>
           <div class="row">
-            <div class="col s12 m12 center valign-wrapper avatar">
+            <div class="col s12 m12 center avatar valign-wrapper">
               {?doc.username}
               <a href="#" class="openCoworker not-form">
               {?doc.avatarFileName}
@@ -37,14 +36,13 @@
                <a class="new-coworker not-form btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
               {/doc.username}
               <!-- image loader-->
-               <div class="input-field" id="id_avatar">
-                  <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
-                  <div class="dropzone grey-text valign-wrapper">
-                    <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
-                         alt="Avatar (glisser-déposer)"/>
-                  </div>
-
+              <div class="input-field" id="id_avatar">
+                <input type="hidden" name="avatar" value="{doc.avatarInfo}"/>
+                <div class="dropzone grey-text valign-wrapper">
+                  <img class="valign" src="{baseURL}/_db/{doc._id}/{doc.avatarFileName}"
+                       alt="Avatar (glisser-déposer)"/>
                 </div>
+              </div>
             </div>
             <div class="col s12 m12 right-col">
               <div class="right-align not-form">
@@ -103,13 +101,21 @@
           <div class="row">
             <div class="col s12 m12 center">
               <div class="skills">
+                <span class="form">Compétences principales (5 max)</span><br/>
                 {#doc.skillList}
                   <span class="skill not-form blue lighten-3">{.}</span>
+                  <div class="input-field">
+                    <input class="form skill validate" name="skill{@idx}{.}{/idx}" type="text" value="{.}"
+                         maxlength="20"/>
+                  </div>
                 {/doc.skillList}
+                {#moreSkill}
                 <div class="input-field">
-                  <input id="skillList" name="skillList" type="text" class="validate" value="{doc.skillList}"/>
-                  <label for="skillList">Compétences (séparées par des virgules)</label>
+                  <input class="form skill validate" name="skill{idx}" type="text" value=""
+                       maxlength="20"/>
                 </div>
+                {/moreSkill}
+                <input type="hidden" name="skillList" value=""/>
               </div>
             </div>
           </div>
@@ -118,10 +124,9 @@
     </div>
   {/cols}
   </div>
-{/rows}
 {:else}
   <p>No coworker yet</p>
-{/rows}
+{/cols}
 
 
 <!--

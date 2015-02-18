@@ -7,8 +7,7 @@ typeName = 'coworker'
 exports.coworkers = function (head, req) {
   start({code: 200, headers: {'Content-Type': 'text/html'}});
 
-  var col, rows = [];
-  var cols = [];
+  var col, cols = [];
   var peer = '';
   if (typeof sessionStorage != "undefined") {
     peer = sessionStorage.getItem("peer")
@@ -35,26 +34,24 @@ exports.coworkers = function (head, req) {
     if (col.doc.github) {
       col.doc.githubUrl = 'https://github.com/' + col.doc.github.slice(1)
     }
+    if (!col.doc.hasOwnProperty('skillList')) {
+      col.doc.skillList = []
+    }
+    if (col.doc.skillList.length < 5) {
+      col.moreSkill = {
+        idx: col.doc.skillList.length
+      }
+    }
     col.type = col.doc.type
     cols.push(col);
-  }
-  if(cols.length) {
-    rows.push({cols: cols});
   }
 
   var form = new forms.Form(types[typeName], null, {
     exclude: ['registrationTime']
   });
-  if(typeof console != "undefined") {
-    console.log("peer", peer)
-  }
-  else {
-    log("peer")
-    log(peer)
-  }
   var content = templates.render('Coworker/list.html', req, {
     peer:   peer,
-    rows:   rows,
+    cols:   cols,
     form:   form.toHTML(req),
   });
 

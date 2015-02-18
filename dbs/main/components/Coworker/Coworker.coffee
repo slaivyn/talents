@@ -58,7 +58,7 @@ class Coworker
 
 
     $('.coworker').each (coworkerIndex, coworker) =>
-      $('.skill', $(coworker)).each (i, skill) =>
+      $('span.skill', $(coworker)).each (i, skill) =>
         unless @skills[skill.textContent]
           @skills[skill.textContent] = 0
         @skills[skill.textContent] += 1
@@ -76,60 +76,11 @@ class Coworker
       _this.filterValue = this.value
     )
 
-    doNotHandleNextSubmit = false
-    $('.coworker form').on 'submit.' + @_appName, (ev) ->
-      if doNotHandleNextSubmit? and doNotHandleNextSubmit
-        return true
-      ev.preventDefault()
-      form    = $(this)
-      parent  = form.parent()
 
-      beforeSubmit = (form) ->
-        coworker = kansoRequire('lib/types').coworker
-        tmpDoc = {
-          type: 'coworker'
-          username: $("input[name='username']", form).val()
-        }
-        id = coworker.fields.id.buildId(tmpDoc)
-        _id = coworker.fields.id.build_id(tmpDoc, id)
-        $("input[name='id']", form).val(id)
-        $("input[name='_id']", form).val(_id)
-        form.attr('action', kansoRequire('duality/utils').getBaseURL() + '/' + _id)
-
-      isNewCoworker = (parent) ->
-        $(".new-coworker", parent).length > 0
-      setError = (msg, parent) ->
-        $(".error", parent).text(msg)
-
-      if isNewCoworker(parent)
-        username = $("input:text[name='username']", parent).val()
-        password = $("input[name='password']", parent).val()
-        if username != '' and password != ''
-          _this.session.signup username, password, {}, (err, res) ->
-            _this.session.login username, password, (loginErr) ->
-              if not loginErr?
-                doNotHandleNextSubmit = true
-                beforeSubmit(form)
-                form.submit()
-
-        ev.stopImmediatePropagation()
-        return false
-      else
-        if not session.isConnected()?
-          console.error "not connected"
-          setError("Vous devez être connecté(e) pour pouvoir modifier vos données", parent)
-          ev.stopImmediatePropagation()
-          return false
-        else
-          username = $("input:text[name='username']", parent).val()
-          if session.isConnected(username)
-            beforeSubmit(form)
-          else
-            ev.stopImmediatePropagation()
-            return false
 
   getCoworkerUsername: (coworkerElement) ->
     return $('input[name="username"]', coworkerElement).val()
+
 
   open: (coworkerElement) ->
     if @clickManager.insideElement?
@@ -160,6 +111,69 @@ class Coworker
     @clickManager.setInsideElement(coworkerModal)
     @clickManager.setCallback =>
       @close(coworkerElement)
+
+    beforeSubmit = (form) ->
+      coworker = kansoRequire('lib/types').coworker
+      tmpDoc = {
+        type: 'coworker'
+        username: $("input[name='username']", form).val()
+      }
+      id = coworker.fields.id.buildId(tmpDoc)
+      _id = coworker.fields.id.build_id(tmpDoc, id)
+      $("input[name='id']", form).val(id)
+      $("input[name='_id']", form).val(_id)
+
+      skillList = $("input.skill", form)
+      .filter ->
+        return this.value != ""
+      .map ->
+        return @value
+      .get().join()
+      $("input[name='skillList']", form).val(skillList
+
+      )
+      form.attr('action', kansoRequire('duality/utils').getBaseURL() + '/' + _id)
+      doNotHandleNextSubmit = true
+
+    doNotHandleNextSubmit = false
+    _this = this
+    $('form', coworkerModal).off 'submit.' + @_appName
+    $('form', coworkerModal).on 'submit.' + @_appName, (ev) ->
+      if doNotHandleNextSubmit? and doNotHandleNextSubmit
+        return true
+      ev.preventDefault()
+      form    = $(this)
+      parent  = form.parent()
+
+      isNewCoworker = (parent) ->
+        $(".new-coworker", parent).length > 0
+      setError = (msg, parent) ->
+        $(".error", parent).text(msg)
+
+      if isNewCoworker(parent)
+        username = $("input:text[name='username']", parent).val()
+        password = $("input[name='password']", parent).val()
+        if username != '' and password != ''
+          _this.session.signup username, password, {}, (err, res) ->
+            _this.session.login username, password, (loginErr) ->
+              if not loginErr?
+                beforeSubmit(form)
+                form.submit()
+
+        ev.stopImmediatePropagation()
+        return false
+      else
+        if not _this.session.isConnected()?
+          setError("Vous devez être connecté(e) pour pouvoir modifier vos données", parent)
+          ev.stopImmediatePropagation()
+          return false
+        else
+          username = $("input:text[name='username']", parent).val()
+          if _this.session.isConnected(username)
+            beforeSubmit(form)
+          else
+            ev.stopImmediatePropagation()
+            return false
 
     return coworkerModal
 
@@ -192,6 +206,39 @@ class Coworker
     $('.not-form',           coworkerElement).hide()
     $('.input-field, .form', coworkerElement).show()
 
+    addNewSkillInputIfNeeded = (coworkerElement) ->
+      lastOne = $('input.skill:last', coworkerElement)
+      skills  = $('input.skill', coworkerElement)
+      nb      = skills.size()
+      if lastOne.val() != "" and nb < 5
+        lastOne.after("<input class='form skill' name='skill#{nb}' type='text' maxlength='20'/>")
+        $('.form', coworkerElement).show()
+
+      skills.off '.skill'
+      lastOne.on 'keyup.' + @_appName + '.skill', (event) ->
+        addNewSkillInputIfNeeded(coworkerElement)
+
+      skills.on 'blur.' + @_appName + '.skill', (event) ->
+        input = $(this)
+        if input.val() == ""
+          input.remove()
+          addNewSkillInputIfNeeded(coworkerElement)
+
+    addNewSkillInputIfNeeded(coworkerElement)
+    validateLength = (input) ->
+      console.log input.val().length, input[0].maxLength
+      if input.val().length > input[0].maxLength
+        input.removeClass('valid').addClass('invalid')
+    $('input.skill', coworkerElement).on 'blur', ->
+      validateLength($(this))
+    $('input.validate', coworkerElement).each ->
+      input = $(this)
+      if input.val().length > 0 && input.is(':valid')
+        input.addClass('valid')
+      if this.maxLength > 0
+        validateLength(input)
+
+
   leaveEditMode: (coworkerElement) ->
     $('.modal-background'  ).hide()
     $('.coworker .not-form').show()
@@ -201,7 +248,7 @@ class Coworker
   showOnlyMatchingSkill: (skill) ->
     if skill
       $(".coworker-col").hide()
-      $(".coworker-col").has(".skill:contains('#{skill}')").show()
+      $(".coworker-col").has("span.skill:contains('#{skill}')").show()
     else
       $(".coworker-col").show()
 

@@ -41,7 +41,7 @@ footer, main:after {
 }
 
 .avatar {
-  min-height: 10rem;
+  min-height: 180px;
 }
 
 .avatar i.mdi-image-photo-camera {
@@ -79,7 +79,7 @@ footer, main:after {
 }
 
 .skills {
-  min-height: 1rem;
+  margin-top: 1rem;
 }
 
 .filter {
