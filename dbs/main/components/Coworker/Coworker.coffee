@@ -16,7 +16,7 @@ adjustColSize = (coworker, maxHeight) ->
   coworker = $(coworker)
   if not maxHeight?
     maxHeight = getMaxHeightOfRow(coworker.closest('.row'))
-  coworker.css('min-height', maxHeight)
+  coworker.css('height', maxHeight)
 
 
 adjustAllColSizes = () ->
