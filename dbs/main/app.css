@@ -78,8 +78,17 @@ footer, main:after {
   position: relative;
 }
 
+.col {
+  padding: 0px !important;
+}
+
+
 .skills {
   margin-top: 1rem;
+}
+
+.skills .input-field {
+  margin-top: 0;
 }
 
 .filter {

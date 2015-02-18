@@ -97,17 +97,17 @@ class Coworker
     .css({
       'top':  position.top
       'left': position.left
-    }).show()
+    })
     if position.left < $(window).width()/2
       modal.css('width', col.width() + col.outerWidth() * 2)
     else
       modal.css('left', position.left - col.outerWidth() * 2)
     coworkerModal = $('.coworker-modal .coworker')
     $('.m12', coworkerModal).addClass('m6').removeClass('m12')
-    $('.hidden', coworkerModal).delay(300).show(0)
+    $('.hidden', coworkerModal).show()
     if @isAllowedToEdit(@getCoworkerUsername(coworkerModal))
-      $('.editButton', coworkerModal).delay(300).show(0)
-
+      $('.editButton', coworkerModal).show()
+    modal.show()
     @clickManager.setInsideElement(coworkerModal)
     @clickManager.setCallback =>
       @close(coworkerElement)
@@ -211,7 +211,12 @@ class Coworker
       skills  = $('input.skill', coworkerElement)
       nb      = skills.size()
       if lastOne.val() != "" and nb < 5
-        lastOne.after("<input class='form skill' name='skill#{nb}' type='text' maxlength='20'/>")
+        newSkill = $('input.skill:first').parent('.input-field').clone()
+        newSkill.children('input')
+          .attr('value', '')
+          .attr('name', 'skill' + nb)
+          .attr('class', 'form skill')
+        lastOne.parent().after(newSkill)
         $('.form', coworkerElement).show()
 
       skills.off '.skill'
